@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>recommendation page for mental health awareness website (subpage)</title>
+    
+
+  </head>
+    
+  <body>
+  <html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Recommendations</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Quicksand', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #e0f2f1;
+  color: #2e3d49;
+  overflow-x: hidden;
+}
+a {text-decoration: none;color:inherit;}
+header {
+  background: #26a69a;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+header h1 {font-size: 1.8rem;letter-spacing: 1px;}
+nav a {margin-left: 20px;font-weight: 600;color:white;transition:0.3s;}
+nav a:hover {opacity: 0.8;}
+section {padding: 40px 20px; max-width: 1100px; margin: 0 auto; animation: fadeIn 1s ease;}
+h2 {text-align:center;margin-bottom:20px;color:#00796b;}
+.cards {display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-bottom:40px;}
+.card {
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  transition: transform 0.3s, box-shadow 0.3s, opacity 0.6s;
+  opacity:0;
+  transform:translateY(20px);
+  font-weight:600;
+}
+.card.show {opacity:1; transform:translateY(0);}
+.card:hover {transform:translateY(-5px); box-shadow:0 6px 18px rgba(0,0,0,0.15);}
+button#refresh-btn {
+  display:block;
+  margin:0 auto;
+  background:#00796b;
+  color:white;
+  border:none;
+  padding:14px 28px;
+  font-weight:bold;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
+}
+button#refresh-btn:hover {background:#004d40;}
+.daily-tip {
+  background:#b2dfdb;
+  padding:15px;
+  margin-bottom:30px;
+  border-radius:8px;
+  text-align:center;
+  font-weight:600;
+  color:#004d40;
+  font-size:1.1rem;
+  animation:fadeIn 1.5s ease;
+}
+footer {background:#2e3d49;color:white;text-align:center;padding:20px;margin-top:50px;}
+footer .watermark {font-size:0.9rem;color:#ccc;margin-top:10px;}
+@keyframes fadeIn {from{opacity:0;transform:translateY(15px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:600px){header{flex-direction:column;text-align:center;}nav a{margin:10px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Daily Recommendations</h1>
+  <nav>
+    <a href="index.html">Home</a>
+  </nav>
+</header>
+
+<section>
+  <div class="daily-tip" id="daily-tip"></div>
+
+  <h2>Drama Recommendations</h2>
+  <div class="cards" id="drama"></div>
+
+  <h2>Music Recommendations</h2>
+  <div class="cards" id="music"></div>
+
+  <h2>Game Recommendations</h2>
+  <div class="cards" id="game"></div>
+
+  <h2>Sports Recommendations</h2>
+  <div class="cards" id="sports"></div>
+
+  <h2>Food Recommendations</h2>
+  <div class="cards" id="food"></div>
+
+  <button id="refresh-btn">🌱 Refresh Recommendations</button>
+</section>
+
+<footer>
+  <p>Created as part of a mental health awareness initiative.</p>
+  <p class="watermark">Watermark: Created by Group 2 — Seraph, Javier, Sherwin, Abraham, Charlie</p>
+</footer>
+
+<script>
+// Dramas separated by language (10 each)
+const dramas = [
+  "English: Stranger Things", "English: Bridgerton", "English: The Crown", "English: Sex Education", "English: Gossip Girl",
+  "English: The Witcher", "English: Riverdale", "English: Shadow and Bone", "English: Outer Banks", "English: You",
+  "Chinese: The Untamed", "Chinese: Joy of Life", "Chinese: Nirvana in Fire", "Chinese: Eternal Love", "Chinese: Go Go Squid",
+  "Chinese: Ashes of Love", "Chinese: Word of Honor", "Chinese: The Long Ballad", "Chinese: Legend of Fei", "Chinese: Love O2O",
+  "Malay: Nur", "Malay: Projek Memikat Suami", "Malay: Titisan Darah", "Malay: Cinta Si Wedding Planner", "Malay: Dia Semanis Honey",
+  "Malay: Lelaki Lingkungan Cinta", "Malay: Adam & Hawa", "Malay: Melastik Ke Hatimu", "Malay: Hati Perempuan", "Malay: Suamiku Ustaz",
+  "Korean: Extraordinary Attorney Woo", "Korean: Our Beloved Summer", "Korean: Start-Up", "Korean: Reply 1988", "Korean: Moving",
+  "Korean: Itaewon Class", "Korean: Crash Landing on You", "Korean: My Mister", "Korean: Vincenzo", "Korean: Hospital Playlist"
+];
+
+// Music recommendations
+const music = [
+  "Weightless - Marconi Union", "Better Days - Ant Clemons", "Photograph - Ed Sheeran", "Fix You - Coldplay", "Imagine - John Lennon",
+  "Blinding Lights - The Weeknd", "Someone You Loved - Lewis Capaldi", "Shape of You - Ed Sheeran", "Let It Be - Beatles", "Happy - Pharrell Williams",
+  "Lovely - Billie Eilish", "Shallow - Lady Gaga & Bradley Cooper", "Happier - Marshmello", "Memories - Maroon 5", "Perfect - Ed Sheeran",
+  "Viva La Vida - Coldplay", "Senorita - Shawn Mendes & Camila Cabello", "Stay - Justin Bieber", "Believer - Imagine Dragons", "Halo - Beyoncé",
+  "Watermelon Sugar - Harry Styles", "Dance Monkey - Tones and I", "Counting Stars - OneRepublic", "Girls Like You - Maroon 5", "A Sky Full of Stars - Coldplay",
+  "Someone Like You - Adele", "Lovely Day - Bill Withers", "All of Me - John Legend", "Can't Stop the Feeling! - Justin Timberlake", "Sunflower - Post Malone"
+];
+
+// Game recommendations
+const games = [
+  "Stardew Valley", "Celeste", "Animal Crossing: New Horizons", "Hollow Knight", "Journey",
+  "Minecraft", "The Legend of Zelda: Breath of the Wild", "Super Mario Odyssey", "Among Us", "Terraria",
+  "Hades", "Slay the Spire", "Cuphead", "Overcooked 2", "Ori and the Blind Forest",
+  "Rocket League", "Fortnite", "Genshin Impact", "Pokemon Legends: Arceus", "Mario Kart 8 Deluxe",
+  "The Sims 4", "God of War", "League of Legends", "Valorant", "Cyberpunk 2077",
+  "Animal Crossing: Pocket Camp", "Call of Duty: Warzone", "Fall Guys", "Dead Cells", "Tetris Effect"
+];
+
+// Sports recommendations
+const sports = [
+  "Swimming", "Yoga", "Running", "Cycling", "Basketball",
+  "Badminton", "Tennis", "Football", "Hiking", "Pilates",
+  "Table Tennis", "Volleyball", "Rock Climbing", "Skateboarding", "Boxing",
+  "Martial Arts", "Golf", "Gymnastics", "Skiing", "Snowboarding",
+  "Dancing", "Surfing", "Weightlifting", "Rowing", "Archery",
+  "Frisbee", "Soccer", "Handball", "Kayaking", "Horse Riding"
+];
+
+// Food recommendations
+const food = [
+  "Smoothie Bowl", "Avocado Toast", "Sushi", "Pasta Salad", "Grilled Salmon",
+  "Acai Bowl", "Chicken Teriyaki", "Vegetable Stir Fry", "Pho", "Ramen",
+  "Pizza Margherita", "Tacos", "Biryani", "Sandwich", "Burger",
+  "Poke Bowl", "Falafel", "Caesar Salad", "Pancakes", "Ice Cream",
+  "Steak", "Ceviche", "Dim Sum", "Pad Thai", "Mac & Cheese",
+  "Lasagna", "Donuts", "Curry Chicken", "Fish & Chips", "Chocolate Cake"
+];
+
+// Daily motivational tips
+const tips = [
+  "Take a deep breath — small steps still count 🌿",
+  "Reach out to someone you trust today 🤝",
+  "Remember: It's okay to ask for help 💬",
+  "Focus on what you can control, not what you can't 🌸",
+  "Celebrate small victories, no matter how tiny ✨",
+  "Your feelings are valid 💚",
+  "Kindness to yourself is a form of strength 🌈"
+];
+
+function pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function loadRecommendations() {
+  function renderCards(category, id){
+    let html="";
+    const randomItems=[];
+    for(let i=0;i<4;i++) randomItems.push(pickRandom(category));
+    randomItems.forEach(item=>{html+=`<div class="card">${item}</div>`;});
+    document.getElementById(id).innerHTML=html;
+  }
+
+  renderCards(dramas,"drama");
+  renderCards(music,"music");
+  renderCards(games,"game");
+  renderCards(sports,"sports");
+  renderCards(food,"food");
+
+  document.querySelectorAll('.card').forEach((card,index)=>{setTimeout(()=>{card.classList.add('show');},index*100);});
+  document.getElementById('daily-tip').textContent=pickRandom(tips);
+}
+
+loadRecommendations();
+document.getElementById('refresh-btn').addEventListener('click', loadRecommendations);
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
